@@ -1,0 +1,81 @@
+<main role="main" class="container">
+
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <?php $this->load->view('layouts/_alert') ?>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <a href="<?= base_url('user/create') ?>" class="btn btn-sm btn-dark">Tambah</a>
+                    <span>Pengguna</span>
+                    <div class="float-right">
+                        <form action="<?= base_url('user/search') ?>" method="POST">
+                            <div class="input-group">
+                                <input type="text" name="keyword" class="form-control form-control-sm text-center" placeholder="Cari" value="<?= $this->session->userdata('keyword') ?>">
+                                <div class="input-group-append">
+                                    <button class="btn btn-dark btn-sm" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <a href="<?= base_url('user/reset') ?>" class="btn btn-dark btn-sm">
+                                        <i class="fas fa-eraser"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Pengguna</th>
+                                <th scope="col">E-Mail</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no = 0;
+                            foreach ($content as $row) : ?>
+                                <tr>
+                                    <th scope="row"><?= ++$no ?></th>
+                                    <td>
+                                        <p>
+                                            <img src="<?= $row->image ? base_url("images/user/$row->image") : base_url("images/user/avatar.png") ?>" alt="" height="50"> <?= $row->name ?>
+                                        </p>
+                                    </td>
+                                    <td><?= $row->email ?></td>
+                                    <td><?= $row->role ?></td>
+                                    <td><?= $row->is_active ? 'Aktif' : 'Tidak Aktif' ?></td>
+                                    <td>
+                                        <?= form_open(base_url("user/delete/$row->id"), ['method' => 'POST']) ?>
+                                        <?= form_hidden('id', $row->id) ?>
+                                        <a href="<?= base_url("user/edit/$row->id") ?>" class="btn btn-sm">
+                                            <b class="text-info">Ubah</b>
+                                        </a>
+                                        <button class="btn btn-sm" type="submit" onclick="return confirm('Apakah yakin ingin menghapus?')">
+                                            <b class="text-danger">Hapus</b>
+                                        </button>
+                                        <?= form_close() ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <?= $pagination ?>
+                    </nav>
+                </div>
+                <div class="card-footer">
+                    <a href="<?= base_url('home') ?>" class="btn btn-dark text-white"><i class="fas fa-angle-left"></i> Kembali</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
